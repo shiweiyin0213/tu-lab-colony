@@ -1,0 +1,12 @@
+node_modules
+dist
+dist-ssr
+coverage
+.env*
+.DS_Store
+.playwright-cli
+.superpowers
+.agents
+agent
+skills-lock.json
+*.log
