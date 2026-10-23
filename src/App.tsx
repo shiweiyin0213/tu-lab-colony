@@ -2225,13 +2225,19 @@ function BreedingTable({ rows, onAdd, onEdit, onDelete }: { rows: BreedingCage[]
       </div>
       <div className="table-scroll">
         <table>
-          <thead><tr><th>Line / cage</th><th>Pairing</th><th>Male</th><th>Female</th><th>Pups</th><th>Wean</th><th>Genotype</th><th>Notes</th><th>Actions</th></tr></thead>
+          <thead><tr><th>Actions</th><th>Line / cage</th><th>Pairing</th><th>Male</th><th>Female</th><th>Pups</th><th>Wean</th><th>Genotype</th><th>Notes</th></tr></thead>
           <tbody>
             {rows.map((cage) => {
               const window = genotypeWindow(cage)
               const status = weanStatus(cage)
               return (
                 <tr key={cage.id} className={cage.priority ? 'priority-row' : ''}>
+                  <td>
+                    <div className="row-actions">
+                      <button className="button secondary table-action-button" onClick={() => onEdit(cage)} aria-label={`Edit breeding cage ${cage.cage}`}><Pencil size={14} />Edit</button>
+                      <button className="button danger table-action-button" onClick={() => onDelete(cage.id)} aria-label={`Delete breeding cage ${cage.cage}`}><Trash2 size={14} />Delete</button>
+                    </div>
+                  </td>
                   <td><strong>{cage.line}</strong><span>Cage {cage.cage}</span></td>
                   <td><span className="genotype-chip">{cage.pairing}</span>{cage.extraFemale && <small>{cage.extraFemale}</small>}</td>
                   <td><strong>{cage.maleGenotype}</strong><span>{fmt(cage.maleDob)} · {ageLabel(cage.maleDob)}</span>{breederAlert(cage.maleDob) && <small className="age-alert">Consider younger breeder</small>}</td>
@@ -2240,12 +2246,6 @@ function BreedingTable({ rows, onAdd, onEdit, onDelete }: { rows: BreedingCage[]
                   <td><span className={`badge ${status.tone}`}>{status.label}</span>{weanDate(cage) && <small>{fmt(format(weanDate(cage)!, 'yyyy-MM-dd'))}</small>}</td>
                   <td>{window ? <><strong>{format(window[0], 'MMM d')}–{format(window[1], 'MMM d')}</strong><span>P7–P11</span></> : <span>Not required</span>}</td>
                   <td className="notes-cell">{cage.priority && <AlertTriangle size={15} />}{cage.notes || '—'}</td>
-                  <td>
-                    <div className="row-actions">
-                      <button className="button secondary table-action-button" onClick={() => onEdit(cage)} aria-label={`Edit breeding cage ${cage.cage}`}><Pencil size={14} />Edit</button>
-                      <button className="button danger table-action-button" onClick={() => onDelete(cage.id)} aria-label={`Delete breeding cage ${cage.cage}`}><Trash2 size={14} />Delete</button>
-                    </div>
-                  </td>
                 </tr>
               )
             })}
@@ -2287,9 +2287,15 @@ function IndividualTable({ rows, dashboardFilter, onClearDashboardFilter, onAdd,
       )}
       <div className="table-scroll">
         <table>
-          <thead><tr><th>Line / cage</th><th>Genotype</th><th>Sex</th><th>DOB / age</th><th>Count</th><th>Mouse number map</th><th>Notes</th><th>Actions</th></tr></thead>
+          <thead><tr><th>Actions</th><th>Line / cage</th><th>Genotype</th><th>Sex</th><th>DOB / age</th><th>Count</th><th>Mouse number map</th><th>Notes</th></tr></thead>
           <tbody>{rows.map((cage) => (
             <tr key={cage.id} className={cage.genotype === 'Mixed' ? 'mixed-row' : ''}>
+              <td>
+                <div className="row-actions">
+                  <button className="button secondary table-action-button" onClick={() => onEdit(cage)} aria-label={`Edit individual cage ${cage.cage}`}><Pencil size={14} />Edit</button>
+                  <button className="button danger table-action-button" onClick={() => onDelete(cage.id)} aria-label={`Delete individual cage ${cage.cage}`}><Trash2 size={14} />Delete</button>
+                </div>
+              </td>
               <td><strong>{cage.line}</strong><span>Cage {cage.cage}</span></td>
               <td><span className={`genotype-chip genotype-${cage.genotype.toLowerCase()}`}>{cage.genotype}</span></td>
               <td>{cage.sex}</td>
@@ -2297,12 +2303,6 @@ function IndividualTable({ rows, dashboardFilter, onClearDashboardFilter, onAdd,
               <td><strong>{cage.count}</strong></td>
               <td className="mapping">{cage.genotypeMap || '—'}</td>
               <td>{cage.notes || '—'}</td>
-              <td>
-                <div className="row-actions">
-                  <button className="button secondary table-action-button" onClick={() => onEdit(cage)} aria-label={`Edit individual cage ${cage.cage}`}><Pencil size={14} />Edit</button>
-                  <button className="button danger table-action-button" onClick={() => onDelete(cage.id)} aria-label={`Delete individual cage ${cage.cage}`}><Trash2 size={14} />Delete</button>
-                </div>
-              </td>
             </tr>
           ))}</tbody>
         </table>
